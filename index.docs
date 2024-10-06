@@ -1,0 +1,39 @@
+# Job Recommendation Service: Recommendation Logic Documentation
+
+## 1. **Overview**
+
+This service uses a rule-based matching algorithm to recommend job postings to users based on their skills, experience, and preferences (desired roles, job type, and location). The recommendations are served via a RESTful API using Node.js and MongoDB.
+
+## 2. **Matching Algorithm**
+
+### **Process:**
+1. **Extract User Data:** The API receives user skills, experience level, and preferences.
+2. **Build Query:** The user's skills, experience level, and preferences are used to construct a query that matches job postings based on:
+   - Job titles (matching desired roles)
+   - Locations (matching preferred work locations)
+   - Job type (e.g., full-time)
+   - Experience level
+   - Skills (at least one skill must match)
+3. **Fetch Jobs:** The query is executed on the MongoDB database to retrieve matching job postings.
+4. **Return Recommendations:** The matched jobs are returned as a JSON array.
+
+## 3. **Assumptions and Design Decisions**
+- **Skill Matching:** At least one user skill must match a job's required skills. No prioritization for the number of matching skills.
+- **Experience Level:** Exact match between user and job experience levels.
+- **Job Preferences:** Only jobs that strictly meet location, job type, and role preferences are recommended.
+- **Data Consistency:** Job postings are assumed to have standard fields like `job_title`, `location`, `job_type`, etc.
+
+## 4. **Challenges and Solutions**
+- **Skill Granularity:** Currently, exact matches are used for skills. Future improvements could introduce skill relationships (e.g., general vs. specific skills).
+- **Location Matching:** The `$in` operator handles multiple preferred locations. Future improvements may consider geographic proximity.
+- **Limited Data:** Seeding with diverse job postings was used to test the algorithm. More data is needed for deeper validation.
+
+## 5. **Future Improvements**
+- **Advanced Matching:** Introduce machine learning for smarter recommendations.
+- **Skill Weighting:** Implement skill importance weighting for better job ranking.
+- **Partial Matches:** Rank jobs by relevance based on partial matches (e.g., matching some skills or locations).
+- **Feedback Loop:** Use user feedback to refine recommendations.
+
+## 6. **Conclusion**
+
+The current rule-based algorithm offers basic job matching based on user profiles. Future improvements could focus on skill refinement, advanced matching techniques, and incorporating user feedback for more accurate recommendations.
